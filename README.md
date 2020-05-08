@@ -269,6 +269,34 @@ Reads from registers 0x13, 0x19 - 0x0f return the same value as ACC.
 
      Guard bits in multiplier retain overflow until after final accumulate
 
+### Bank I: Log / Exp
+
+- 0: raw log output
+
+- 1: raw exp output
+
+- 2: exp log cancellation
+ 
+- 3: log gain
+
+- 4: log powers
+
+- 5: 1/x
+
+- 6: square root
+
+- 7: division
+
+### Bank J: Filters
+
+- DFI
+
+- DFII
+ 
+- Cascaded
+
+- biquad error
+
 ## License
 
 To the extent possible under law, the author(s) have dedicated
