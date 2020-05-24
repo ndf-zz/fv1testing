@@ -25,54 +25,72 @@ directly to FV-1 DA outputs to monitor test results.
 
 ### Bank A: Load & Initialise
 
-- 0: Output 0.0.
+- 0: Output 0.0 to DACL.
 
      Result: DAC outputs ~1.7V
 
-- 1: Output maximum value
+- 1: Output maximum value to DACL
 
      Result: DAC outputs ~3.1V
 
-- 2: Output minimum value
+- 2: Output minimum value to DACL
 
      Result: DAC Outputs ~0.3V
 
 - 3: Check copy to and from REG
 
+     Output: DACL is max for PASS, min for FAIL
+
      Result: PASS, wrax/ldax yield same result
 
 - 4: Check REG initial value
+
+     Output: REG initial value is written to DACL
 
      Result: REG is initialised with 0.0
 
 - 5: Check PACC initial value
 
+     Output: PACC initial value is written to DACL
+
      Result: PACC is initialised with 0.0
 
 - 6: Check ACC initial value
+
+     Output: ACC initial value is written to DACL
 
      Result: ACC is initialied with 0.0
 
 - 7: Check delay initial value
 
-     Result: Delay line is cleared with 0.0
+     Output: Delay content is written to DACL
+
+     Result: Whole delay line is initialised with 0.0
 
 
 ### Bank B: Register Persistence & ADDA
 
 - 0: Check ACC persistence.
 
+     Output: DACL is max for PASS, min for FAIL
+
      Result: ACC persists OK
 
 - 1: Check ACC as delay element
+
+     Output: DACL varies from min to max for PASS
 
      Result: Output steadily increases OK
 
 - 2: Check PACC persistence
 
+     Output: DACL is max for PASS, min for FAIL
+
      Result: PACC persists OK
 
 - 3: Check REG persistence
+
+     Output: DACL varies from min to max for PASS
 
      Result: REG persists OK
 
@@ -83,13 +101,20 @@ directly to FV-1 DA outputs to monitor test results.
 
 - 5: Check DAC persistence within program
 
+     ADCL is transferred to DACL if POT0 is > ~0.5, otherwise DACL is
+     not written.
+
      Result: DAC holds last written value
 
 - 6: ADC multiple reads return same value
 
+     Output: DACL is max if ADCL is exactly same, min if different.
+
      Result: ADC returns same value throughout program
 
 - 7: DAC multiple writes output only last written
+
+     Output: DACL is written with min, then overwritten with max
 
      Result: DAC outputs last written value in program
 
