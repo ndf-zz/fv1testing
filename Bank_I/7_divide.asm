@@ -6,7 +6,9 @@
 ;
 ;	log(x/y) = log(x) - log(y)
 ;
-; POT0: Offset
+; Note: y is input on POT0 and ranges over -1.0 to 1.0
+;
+; POT0: Divisor
 ;
 
 ; Prepare LFOs
@@ -15,17 +17,21 @@
 
 main:	rdax	POT0,1.0	; load pot0 not inverted
 	sof	-2.0,-1.0	; flip and offset
-	wrax	REG2,0.0	; save and clear acc
-	cho	rdal,SIN0	; load test signal
+	wrax	REG2,1.0	; save divisor for sign test
+	log	-1.0,0.0	; compute -log(y)
+	wrax	REG3,0.0	; save intermediate result
+	cho	rdal,SIN0	; load test signal, dividend
 	wrax	DACL,1.0	; write to left output
-	wrax	REG0,1.0	; save to reg for sign test
-	log	1.0,0.0		; take log(abs(x)), acc is now s4_6
-	rdax	REG2,1.0	; add scale as log(y), acc:-16->16
-	exp	1.0,0.0		; 2**(log(x)-log(y)), acc is back to s_23
-	wrax	REG1,0.0	; save intermediate value
-	ldax	REG0		; fetch original value
-	skp	neg,invrt	; restore original sign
-	rdax	REG1,1.0	; fetch positive value
-	skp	0,outp
-invrt:	rdax	REG1,-1.0	; fetch negative value
-outp:	wrax	DACR,0.0	; output to right channel
+	wrax	REG1,1.0	; save to reg for sign test
+	log	1.0,0.0		; take log(x), acc is now S4_6
+	rdax	REG3,1.0	; add divisor
+	exp	1.0,0.0		; 2**(log(x)-log(y))
+	wrax	REG4,0.0	; save magnitude 
+	ldax	REG1		; re-load dividend
+	ldax	REG2		; re-load divisor
+	skp	ZRO,negate	; if sign differs, negate output
+	ldax	REG4		; fetch positive result
+	skp	0,output
+negate:	ldax	REG4		; fetch positive result
+	sof	-1.0,0.0	; negate result
+output:	wrax	DACR,0.0	; output to right channel

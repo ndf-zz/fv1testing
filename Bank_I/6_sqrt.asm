@@ -6,6 +6,9 @@
 ;
 ;	log(sqrt(x)) = 0.5 * log(x)
 ;
+; Note: Since log performs abs(x), the negative signal is
+;       incorrect.
+;
 ; POT0: Offset
 ;
 
@@ -13,19 +16,16 @@
 	skp	RUN,main
 	wlds	SIN0,100,32767//128
 
-main:	rdax	POT0,1.0	; load pot0 not inverted
+main:	rdax	POT0,-1.0	; load pot0 inverted
 	sof	-2.0,-1.0	; flip and offset
-	wrax	REG2,0.0	; save and clear acc
-	cho	rdal,SIN0	; load test signal
+	cho	rdal,SIN0	; load test signal and add to offset
 	wrax	DACL,1.0	; write to left output
-	wrax	REG0,1.0	; save to reg for sign test
-	log	1.0,0.0		; take log(abs(x)), acc is now s4_6
-	rdax	REG2,1.0	; add scale as log(y), acc:-16->16
-	exp	1.0,0.0		; 2**(log(x)-log(y)), acc is back to s_23
+	log	0.5,0.0		; take 0.5*log(abs(x)), acc is now s4_6
+	exp	1.0,0.0		; 2**..., acc is back to s_23
 	wrax	REG1,0.0	; save intermediate value
 	ldax	REG0		; fetch original value
-	skp	neg,invrt	; restore original sign
+	skp	NEG,invrt	; restore original sign
 	rdax	REG1,1.0	; fetch positive value
-	skp	0,outp
+	skp	0,output
 invrt:	rdax	REG1,-1.0	; fetch negative value
-outp:	wrax	DACR,0.0	; output to right channel
+output:	wrax	DACR,0.0	; output to right channel

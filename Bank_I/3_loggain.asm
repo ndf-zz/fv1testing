@@ -28,8 +28,8 @@ main:	rdax	POT0,-1.0	; load pot0 inverted
 	exp	1.0,0.0		; 2**(log(x)+log(y)), acc is back to s_23
 	wrax	REG1,0.0	; save intermediate value
 	ldax	REG0		; fetch original value
-	skp	neg,invrt	; restore original sign
+	skp	NEG,invrt	; restore original sign
 	rdax	REG1,1.0	; fetch positive value
-	skp	0,outp
+	skp	0,output
 invrt:	rdax	REG1,-1.0	; fetch negative value
-outp:	wrax	DACR,0.0	; output to right channel
+output:	wrax	DACR,0.0	; output to right channel

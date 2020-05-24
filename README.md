@@ -296,21 +296,38 @@ Reads from registers 0x13, 0x19 - 0x0f return the same value as ACC.
 
 ### Bank I: Log / Exp
 
-- 0: raw log output
+- 0: raw log
 
-- 1: raw exp output
+     Output: Take log of an LFO and output to DACR: y ~= 1/16 * log(abs(x))
+
+- 1: raw exp
+
+     Output: Take exp of an LFO and output to DACR: y ~= 2**(16 * x)
 
 - 2: exp log cancellation
  
+     Test cancellation of terms: 2**(log(x)) = x within the limits of the
+     FV-1.
+
 - 3: log gain
+
+     Add a DC offset to log(x) for gain: y = 2**(log(x) + gain)
 
 - 4: log powers
 
+     Multiply log(x) by a DC offset for powers x**(y)
+
 - 5: 1/x
+
+     Compute the special case 1/x using -log(x)
 
 - 6: square root
 
+     Compute the special case sqrt(x) using -log(x)
+
 - 7: division
+
+     Compute x/y using 2**(log(x) - log(y))
 
 ### Bank J: Filters
 
