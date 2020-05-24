@@ -298,11 +298,11 @@ Reads from registers 0x13, 0x19 - 0x0f return the same value as ACC.
 
 - 0: raw log
 
-     Output: Take log of an LFO and output to DACR: y ~= 1/16 * log(abs(x))
+     Output: Take log of an LFO and output to DACR.
 
 - 1: raw exp
 
-     Output: Take exp of an LFO and output to DACR: y ~= 2**(16 * x)
+     Output: Take exp of an LFO and output to DACR.
 
 - 2: exp log cancellation
  
@@ -319,11 +319,11 @@ Reads from registers 0x13, 0x19 - 0x0f return the same value as ACC.
 
 - 5: 1/x
 
-     Compute the special case 1/x using -log(x)
+     Compute the special case 1/x using y=2**(-log(x))
 
 - 6: square root
 
-     Compute the special case sqrt(x) using -log(x)
+     Compute the special case sqrt(x) using y=2**(0.5*log(x))
 
 - 7: division
 
