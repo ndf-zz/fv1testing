@@ -1,4 +1,4 @@
-# Makefile for FV-1 program bank
+# Makefile for FV-1 test program bank
 #
 # --
 # 2018 Nathan Fraser <ndf@metarace.com.au>
@@ -17,15 +17,19 @@
 
 # Bank file and information strings
 BANKFILE = bankh
-BANKNO = 8
 BANKNAME = "H: Computation"
+
+# Dervish bank number to write to
+BANKNO = 0	
 
 # FV-1 assembler and flags
 AS = asfv1
-ASFLAGS = 
+ASFLAGS = -b
+DIS = disfv1
+DISFLAGS =
 
-# Helper scripts for extracting display texts
-DRVTXT = drvtext
+# Helper script for extracting Dervish display texts
+DRVTXT = ../scripts/drvtext
 
 # i2c eeprom programmer
 PGM = fv1-eeprom-host
@@ -37,13 +41,13 @@ TARGET = $(addsuffix .bin,$(BANKFILE))
 CHECKFILE = $(TARGET:.bin=.chk)
 DRVBANK = $(TARGET:.bin=.bnk)
 SOURCES = $(wildcard [01234567]_*.asm)
-PROGS = $(SOURCES:.asm=.prg)
+LISTINGS = $(SOURCES:.asm=.lst)
 DRVTXTS = $(SOURCES:.asm=.dvt)
 
 .PHONY: bank
 bank:	$(DRVBANK)
 
-$(TARGET):	$(PROGS)
+$(TARGET):	$(LISTINGS)
 
 $(DRVBANK): $(TARGET) $(DRVTXTS)
 	dd if=$(TARGET) bs=512 count=8 conv=notrunc of=$(DRVBANK)
@@ -54,9 +58,9 @@ $(DRVBANK): $(TARGET) $(DRVTXTS)
 	$(DRVTXT) $< $@
 	dd if=$@ bs=84 count=1 seek=$(shell echo $$(( 4117 + $(firstword $(subst _, ,$<)) * 84 ))) oflag=seek_bytes conv=notrunc of=$(DRVBANK)
 
-%.prg: %.asm
-	$(AS) $(ASFLAGS) $< $@
-	dd if=$@ bs=512 count=1 seek=$(firstword $(subst _, ,$<)) conv=notrunc of=$(TARGET)
+%.lst: %.asm
+	$(AS) $(ASFLAGS) -p $(firstword $(subst _, ,$<)) $< $(TARGET)
+	$(DIS) $(DISFLAGS) -p $(firstword $(subst _, ,$<)) $(TARGET) $@
 
 .PHONY: $(CHECKFILE)
 $(CHECKFILE):
@@ -86,4 +90,4 @@ help:
 
 .PHONY: clean
 clean:
-	-rm -f $(TARGET) $(CHECKFILE) $(DRVBANK) $(PROGS) $(DRVTXTS)
+	-rm -f $(TARGET) $(CHECKFILE) $(DRVBANK) $(LISTINGS) $(DRVTXTS)
