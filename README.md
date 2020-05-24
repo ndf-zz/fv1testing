@@ -4,14 +4,14 @@ A collection of test programs and examples for the
 Spin Semiconductor FV-1 reverb IC. Connect a scope
 directly to FV-1 DA outputs to monitor test results.
 
-
 ## Test Programs and Results
 
 ### Overview
 
-- On program load, all registers, accumulators and delay memory
+- On program change, all registers, accumulators and delay memory
   locations are initialised with 0.0. DACs are held at 0.0 for about
-  18ms, then the program starts, DACs are ramped up during the first sample.
+  18ms, then the program starts, DACs are ramped up during the first
+  few samples.
 
 - Skip flags combine by AND:
   "Perform skip if all flagged conditions are met."
