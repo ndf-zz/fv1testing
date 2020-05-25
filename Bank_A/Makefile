@@ -33,7 +33,7 @@ DRVTXT = ../scripts/drvtext
 
 # i2c eeprom programmer
 PGM = fv1-eeprom-host
-PGMTTY = /dev/ttyACM3
+PGMTTY = /dev/ttyACM2
 PGMFLAGS = -p 128 -n 4789 -t $(PGMTTY)
 
 # --

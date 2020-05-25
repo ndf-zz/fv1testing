@@ -123,13 +123,19 @@ directly to FV-1 DA outputs to monitor test results.
 
 - 0: Unconditional SKP
 
+     Output: ADCL is written to DACL if no skip is performed, else output 0.0
+
      Result: skp with flags=0 performs unconditional skip
 
 - 1: All SKP flags set
 
+     Output: ADCL is written to DACL if no skip is performed, else output 0.0
+
      Result: skp with flags=0x1f never skips
 
 - 2: Zero crossing flag combinations
+
+     Output: Test mode is written to DACR, zero crossings are written to DACL
 
      Result: RUN,GEZ,NEG combine with ZRC. ZRO does not combine
 
@@ -171,7 +177,7 @@ directly to FV-1 DA outputs to monitor test results.
 
 - 1: Negative ADDR_PTR
 
-     Result: Sign bit is cleared, then address bits 0x7fff00 used directly
+     Result: Sign bit is ignored, address bits 0x7fff00 used directly
 
 - 2: Check CHO rdal,SIN flags
 
@@ -309,9 +315,13 @@ Reads from registers 0x13, 0x19 - 0x0f return the same value as ACC.
      Test cancellation of terms: 2**(log(x)) = x within the limits of the
      FV-1.
 
+     Result: With sign correction, exp/log cancells as expected.
+
 - 3: log gain
 
      Add a DC offset to log(x) for gain: y = 2**(log(x) + gain)
+
+     Result: POT0 gives gain factor of roughly 0.00001 to 65535.0.
 
 - 4: log powers
 
@@ -320,6 +330,8 @@ Reads from registers 0x13, 0x19 - 0x0f return the same value as ACC.
 - 5: 1/x
 
      Compute the special case 1/x using y=2**(-log(x))
+
+     Result: all output values are saturated since abs(y) >= 1.0 for all x
 
 - 6: square root
 

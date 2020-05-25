@@ -28,8 +28,7 @@ main:	clr
 	wrax	REG0,0.0		; save to temp reg
 	or	-0.5000 		; load garbage value
 	not				; flip all the bits
-	clr
-	rdax	0x0f,1.0		; load test reg
+	ldax	0x0f			; load test reg
         rdax	REG0,-1.0		; subtract temp value from rda
 	skp	ZRO,mark
 	skp	0,space

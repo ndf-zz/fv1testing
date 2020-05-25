@@ -41,7 +41,7 @@ main:	rdax	POT0,-1.0	; load pot0 inverted
 	wrax	REG3,0.0	; save magnitude 
 	ldax	REG2		; re-load dividend
 	ldax	REG1		; re-load divisor
-	skp	ZRO,negate	; if sign differs, negate output
+	skp	ZRC,negate	; if sign differs, negate output
 	ldax	REG3		; fetch positive result
 	skp	0,output
 negate:	ldax	REG3		; fetch positive result
