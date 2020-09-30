@@ -341,15 +341,24 @@ Reads from registers 0x13, 0x19 - 0x0f return the same value as ACC.
 
      Compute x/y using 2**(log(x) - log(y))
 
-### Bank J: Filters
+### Bank J: DF Filters
 
-- DFI
+- DF-I order 2,3 delay lines
 
-- DFII
- 
-- Cascaded
+- DF-I order 2,3 registers
 
-- biquad error
+- TDF-I order 2,3 delay lines
+
+- TDF-II order 2,3 delay lines
+
+- DF-I order 2,3 registers
+
+- DF-II order 2,3 registers
+
+- TDF-I order 2,3 registers
+
+- TDF-II order 2,3 registers
+
 
 ## License
 
